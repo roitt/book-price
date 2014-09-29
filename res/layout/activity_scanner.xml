@@ -1,0 +1,12 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/camera_preview"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_weight="1"
+    android:orientation="horizontal" >
+ 
+    <include
+        android:id="@+id/camera_overlay_layout"
+        layout="@layout/camera_overlay" />
+ 
+</FrameLayout>

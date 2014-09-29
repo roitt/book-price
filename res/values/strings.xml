@@ -5,4 +5,12 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <!-- Scanner strings -->
+    <string name="scan_for_barcode">Scan for Barcode</string>
+    <string name="search_hint">Search for a book</string>
+    <string name="ref_txt">Scanning.</string>
+    <string name="exp_txt_one">Place your barcode inside the grey markers.</string>
+    <string name="exp_txt_two">Center it with the red marker.</string>
+    <string name="scan_hint">You have the book with you right now? Just scan the barcode by hitting the button below, and we\'ll do the rest for you.</string>
+
 </resources>

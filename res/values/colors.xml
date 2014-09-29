@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="crimson">#FFDD1E2F</color>
+    <color name="tulip">#FFEBB035</color>
+    <color name="cereline">#FF06A2CB</color>
+    <color name="eucalyptus">#FF218559</color>
+    <color name="amber">#FFD0C6B1</color>
+    <color name="aztec">#FF192823</color>
+    <color name="pearl">#FFFFFFFF</color>
+    <color name="greyish">#FF595959</color>
+    
+</resources>

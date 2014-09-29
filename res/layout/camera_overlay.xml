@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/camera_overlay_rl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/center_overlay"
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:layout_centerVertical="true"
+        android:background="#00000000" >
+
+        <ImageView
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="3dp"
+            android:contentDescription="@string/app_name"
+            android:scaleType="fitXY"
+            android:src="@drawable/top_cam_marker" />
+
+        <ImageView
+            android:id="@+id/center_marker"
+            android:layout_width="165dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="3dp"
+            android:contentDescription="@string/app_name"
+            android:scaleType="fitXY"
+            android:src="@drawable/center_cam_marker" />
+
+        <ImageView
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="3dp"
+            android:contentDescription="@string/app_name"
+            android:scaleType="fitXY"
+            android:src="@drawable/bottom_cam_marker" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/top_overlay"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/center_overlay"
+        android:background="#AF192823" >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="#00000000">
+
+            <TextView
+                android:id="@+id/exp_txt_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/exp_txt_one"
+                android:textColor="@color/pearl"
+                android:layout_centerHorizontal="true"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/exp_txt_two"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/exp_txt_one"
+                android:text="@string/exp_txt_two"
+                android:textColor="@color/pearl"
+                android:layout_centerHorizontal="true"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/ref_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/exp_txt_two"
+                android:text="@string/ref_txt"
+                android:textColor="@color/cereline"
+                android:textSize="18sp"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/bottom_overlay"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/center_overlay"
+        android:background="#AF192823" >
+    </RelativeLayout>
+
+</RelativeLayout>
