@@ -37,7 +37,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.devspark.appmsg.AppMsg;
 
 public class ZBarScannerActivity extends Activity implements
 		Camera.PreviewCallback, ZBarConstants {
@@ -52,7 +53,6 @@ public class ZBarScannerActivity extends Activity implements
 	private boolean mPreviewing = true;
 	private ProgressDialog pDialog;
 
-	private String caller = "";
 	ConnectionInspector conIns;
 
 	private FrameLayout preview;
@@ -191,19 +191,17 @@ public class ZBarScannerActivity extends Activity implements
 						pDialog = ProgressDialog.show(ZBarScannerActivity.this,
 								null, "Fetching book details. Please wait.",
 								true);
-						if (caller.equals("show")) {
-							FetchBookData fbd = new FetchBookData();
-							fbd.execute(googleBooksURL + symData);
-						}
+						FetchBookData fbd = new FetchBookData();
+						fbd.execute(googleBooksURL + symData);
 					} else {
-						Toast.makeText(ZBarScannerActivity.this,
+						AppMsg.makeText(ZBarScannerActivity.this,
 								"Please connect to internet and try again.",
-								Toast.LENGTH_SHORT).show();
+								AppMsg.STYLE_ALERT).show();
 					}
 					break;
 				} else {
-					Toast.makeText(ZBarScannerActivity.this,
-							"Failed to scan barcode.", Toast.LENGTH_LONG)
+					AppMsg.makeText(ZBarScannerActivity.this,
+							"Failed to scan barcode.", AppMsg.STYLE_ALERT)
 							.show();
 				}
 			}

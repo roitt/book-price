@@ -12,5 +12,6 @@
     <string name="exp_txt_one">Place your barcode inside the grey markers.</string>
     <string name="exp_txt_two">Center it with the red marker.</string>
     <string name="scan_hint">You have the book with you right now? Just scan the barcode by hitting the button below, and we\'ll do the rest for you.</string>
+    <string name="compare_prices">Compare Prices</string>
 
 </resources>
