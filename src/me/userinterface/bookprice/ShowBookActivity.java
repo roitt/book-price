@@ -2,9 +2,21 @@ package me.userinterface.bookprice;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 public class ShowBookActivity extends Activity {
+
+	private ImageView thumbnailIV;
+	private TextView titleTV;
+	private TextView authorsTV;
+	private TextView publisherTV;
+	private TextView descriptionTV;
+	private Button compareBTN;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -25,5 +37,17 @@ public class ShowBookActivity extends Activity {
 		final String pubDate = extras.getString("publisheddate");
 		final String thumbLink = extras.getString("thumblink");
 		final String smallThumbLink = extras.getString("smallThumblink");
+
+		thumbnailIV = (ImageView) findViewById(R.id.book_cover);
+		titleTV = (TextView) findViewById(R.id.book_title);
+		authorsTV = (TextView) findViewById(R.id.book_author);
+		publisherTV = (TextView) findViewById(R.id.book_pub_date);
+		descriptionTV = (TextView) findViewById(R.id.book_description);
+
+		// Lazy profile picture
+		if (thumbLink != null && thumbLink.length() > 0 && thumbLink != "")
+			Picasso.with(ShowBookActivity.this).load(thumbLink)
+					.placeholder(R.drawable.ic_book_def)
+					.error(R.drawable.ic_book_def).into(thumbnailIV);
 	}
 }

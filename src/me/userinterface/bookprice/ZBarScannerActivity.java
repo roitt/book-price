@@ -13,8 +13,6 @@ import net.sourceforge.zbar.Symbol;
 import net.sourceforge.zbar.SymbolSet;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -33,6 +31,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -188,9 +187,6 @@ public class ZBarScannerActivity extends Activity implements
 
 					conIns = new ConnectionInspector(ZBarScannerActivity.this);
 					if (conIns.isConnectingToInternet()) {
-						pDialog = ProgressDialog.show(ZBarScannerActivity.this,
-								null, "Fetching book details. Please wait.",
-								true);
 						FetchBookData fbd = new FetchBookData();
 						fbd.execute(googleBooksURL + symData);
 					} else {
@@ -208,151 +204,158 @@ public class ZBarScannerActivity extends Activity implements
 		}
 	}
 
-	class FetchBookData extends AsyncTask<String, Void, String> {
+	 private class FetchBookData extends AsyncTask<String, Void, String> {
 
 		@Override
 		protected void onPreExecute() {
+			pDialog = ProgressDialog.show(ZBarScannerActivity.this, null,
+					"Fetching book details. Please wait.", true);
 		}
 
-		@Override
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
+			Log.v("do InBackground", "doInBackground");
 			HttpClient httpClient = new DefaultHttpClient();
 			HttpResponse response;
 			String responseString = "";
 			try {
 				response = httpClient.execute(new HttpGet(params[0]));
-				StatusLine statusLine = response.getStatusLine();
-				if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
-					ByteArrayOutputStream out = new ByteArrayOutputStream();
-					response.getEntity().writeTo(out);
-					out.close();
-					responseString = out.toString();
-				} else {
-					response.getEntity().getContent().close();
-					throw new IOException(statusLine.getReasonPhrase());
-				}
+				ByteArrayOutputStream out = new ByteArrayOutputStream();
+				response.getEntity().writeTo(out);
+				out.close();
+				responseString = out.toString();
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();
+				return "";
 			} catch (IOException e) {
 				e.printStackTrace();
+				return "";
 			}
 			return responseString;
 		}
 
 		@Override
 		protected void onPostExecute(String resultJSON) {
-			String title = "";
-			String subtitle = "";
-			String author = "";
-			String publisher = "";
-			String pubDate = "";
-			String thumbLink = "";
-			String smallThumbLink = "";
-			String id = "";
-			String isbn_10 = "";
-			String isbn_13 = "";
-			String desc = "";
-			try {
-				jObj = new JSONObject(resultJSON);
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			try {
-				JSONArray items = jObj.getJSONArray("items");
-
-				title = "";
-				subtitle = "";
-				author = "";
-				publisher = "";
-				pubDate = "";
-				thumbLink = "";
-				id = "";
-				isbn_10 = "";
-				isbn_13 = "";
-				desc = "";
-
-				JSONObject item = items.getJSONObject(0);
-
-				if (item.has("id")) {
-					id = item.getString("id");
+			if (resultJSON != "") {
+				String title = "";
+				String subtitle = "";
+				String author = "";
+				String publisher = "";
+				String pubDate = "";
+				String thumbLink = "";
+				String smallThumbLink = "";
+				String id = "";
+				String isbn_10 = "";
+				String isbn_13 = "";
+				String desc = "";
+				try {
+					jObj = new JSONObject(resultJSON);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 
-				if (item.has("volumeInfo")) {
-					JSONObject volumeInfo = item.getJSONObject("volumeInfo");
-					if (volumeInfo.has("title"))
-						title = volumeInfo.getString("title");
-					if (volumeInfo.has("subtitle"))
-						subtitle = volumeInfo.getString("subtitle");
-					if (volumeInfo.has("description"))
-						desc = volumeInfo.getString("description");
-					if (volumeInfo.has("publisher"))
-						publisher = volumeInfo.getString("publisher");
-					if (volumeInfo.has("publishedDate"))
-						pubDate = volumeInfo.getString("publishedDate");
+				try {
+					JSONArray items = jObj.getJSONArray("items");
 
-					if (volumeInfo.has("authors")) {
-						JSONArray authors = volumeInfo.getJSONArray("authors");
-						author = authors.join(", ");
+					title = "";
+					subtitle = "";
+					author = "";
+					publisher = "";
+					pubDate = "";
+					thumbLink = "";
+					id = "";
+					isbn_10 = "";
+					isbn_13 = "";
+					desc = "";
+
+					JSONObject item = items.getJSONObject(0);
+
+					if (item.has("id")) {
+						id = item.getString("id");
 					}
 
-					if (volumeInfo.has("industryIdentifiers")) {
-						JSONArray industryIdentifiers = volumeInfo
-								.getJSONArray("industryIdentifiers");
-						for (int j = 0; j < industryIdentifiers.length(); j++) {
-							JSONObject tempISBN = industryIdentifiers
-									.getJSONObject(j);
-							String type = "";
-							if (tempISBN.has("type"))
-								type = tempISBN.getString("type");
-							String identifier = "";
-							if (tempISBN.has("identifier"))
-								identifier = tempISBN.getString("identifier");
+					if (item.has("volumeInfo")) {
+						JSONObject volumeInfo = item
+								.getJSONObject("volumeInfo");
+						if (volumeInfo.has("title"))
+							title = volumeInfo.getString("title");
+						if (volumeInfo.has("subtitle"))
+							subtitle = volumeInfo.getString("subtitle");
+						if (volumeInfo.has("description"))
+							desc = volumeInfo.getString("description");
+						if (volumeInfo.has("publisher"))
+							publisher = volumeInfo.getString("publisher");
+						if (volumeInfo.has("publishedDate"))
+							pubDate = volumeInfo.getString("publishedDate");
 
-							if (type.equals("ISBN_10")) {
-								isbn_10 = identifier;
-							} else if (type.equals("ISBN_13")) {
-								isbn_13 = identifier;
+						if (volumeInfo.has("authors")) {
+							JSONArray authors = volumeInfo
+									.getJSONArray("authors");
+							author = authors.join(", ");
+						}
+
+						if (volumeInfo.has("industryIdentifiers")) {
+							JSONArray industryIdentifiers = volumeInfo
+									.getJSONArray("industryIdentifiers");
+							for (int j = 0; j < industryIdentifiers.length(); j++) {
+								JSONObject tempISBN = industryIdentifiers
+										.getJSONObject(j);
+								String type = "";
+								if (tempISBN.has("type"))
+									type = tempISBN.getString("type");
+								String identifier = "";
+								if (tempISBN.has("identifier"))
+									identifier = tempISBN
+											.getString("identifier");
+
+								if (type.equals("ISBN_10")) {
+									isbn_10 = identifier;
+								} else if (type.equals("ISBN_13")) {
+									isbn_13 = identifier;
+								}
 							}
 						}
+
+						if (volumeInfo.has("imageLinks")) {
+							JSONObject imageLinks = volumeInfo
+									.getJSONObject("imageLinks");
+
+							if (imageLinks.has("smallThumbnail"))
+								smallThumbLink = imageLinks
+										.getString("smallThumbnail");
+							if (imageLinks.has("thumbnail"))
+								thumbLink = imageLinks.getString("thumbnail");
+						}
+
+						Intent iSell = new Intent(ZBarScannerActivity.this,
+								ShowBookActivity.class);
+						iSell.putExtra("id", id);
+						iSell.putExtra("isbn10", isbn_10);
+						iSell.putExtra("isbn13", isbn_13);
+						iSell.putExtra("title", title);
+						iSell.putExtra("subtitle", subtitle);
+						iSell.putExtra("authors", author);
+						iSell.putExtra("publisher", publisher);
+						iSell.putExtra("publisheddate", pubDate);
+						iSell.putExtra("description", desc);
+						iSell.putExtra("thumblink", thumbLink);
+						iSell.putExtra("smallThumblink", smallThumbLink);
+						startActivity(iSell);
 					}
 
-					if (volumeInfo.has("imageLinks")) {
-						JSONObject imageLinks = volumeInfo
-								.getJSONObject("imageLinks");
-
-						if (imageLinks.has("smallThumbnail"))
-							smallThumbLink = imageLinks
-									.getString("smallThumbnail");
-						if (imageLinks.has("thumbnail"))
-							thumbLink = imageLinks.getString("thumbnail");
-					}
-
-					Intent iSell = new Intent(ZBarScannerActivity.this,
-							ShowBookActivity.class);
-					iSell.putExtra("id", id);
-					iSell.putExtra("isbn10", isbn_10);
-					iSell.putExtra("isbn13", isbn_13);
-					iSell.putExtra("title", title);
-					iSell.putExtra("subtitle", subtitle);
-					iSell.putExtra("authors", author);
-					iSell.putExtra("publisher", publisher);
-					iSell.putExtra("publisheddate", pubDate);
-					iSell.putExtra("description", desc);
-					iSell.putExtra("thumblink", thumbLink);
-					iSell.putExtra("smallThumblink", smallThumbLink);
-					startActivity(iSell);
-
-					centerMarker.setImageResource(R.drawable.center_cam_marker);
-					scanText.setText("Scanning.");
-					pDialog.dismiss();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} else {
+				centerMarker.setImageResource(R.drawable.center_cam_marker);
+				scanText.setText("Scanning.");
+				pDialog.dismiss();
+				AppMsg.makeText(
+						ZBarScannerActivity.this,
+						"Data could not be fetched at the moment. Please try later.",
+						AppMsg.STYLE_ALERT).show();
 			}
 		}
 	}
