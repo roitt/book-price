@@ -2,6 +2,7 @@ package me.userinterface.bookprice;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ public class ShowBookActivity extends Activity {
 	private TextView descriptionTV;
 	private Button compareBTN;
 
+	@SuppressWarnings("unused")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -49,5 +51,20 @@ public class ShowBookActivity extends Activity {
 			Picasso.with(ShowBookActivity.this).load(thumbLink)
 					.placeholder(R.drawable.ic_book_def)
 					.error(R.drawable.ic_book_def).into(thumbnailIV);
+
+		titleTV.setText(title);
+		authorsTV.setText("By " + authors);
+		descriptionTV.setText(description);
+		publisherTV.setText(publisher + " " + pubDate);
+
+		compareBTN = (Button) findViewById(R.id.compare_prices);
+		compareBTN.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 }
