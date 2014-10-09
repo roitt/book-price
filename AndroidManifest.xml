@@ -24,15 +24,20 @@
             android:name="me.userinterface.bookprice.ZBarScannerActivity"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Holo.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".ShowBookActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".SplashActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Holo.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".ShowBookActivity"
-            android:label="@string/app_name" >
         </activity>
     </application>
 

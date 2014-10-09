@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">BookPrice</string>
+    <string name="title_head">Book Price</string>
+    <string name="subtitle">An easy way to compare prices.</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
