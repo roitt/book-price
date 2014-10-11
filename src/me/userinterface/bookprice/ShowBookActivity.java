@@ -1,12 +1,26 @@
 package me.userinterface.bookprice;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.devspark.appmsg.AppMsg;
 import com.squareup.picasso.Picasso;
 
 public class ShowBookActivity extends Activity {
@@ -63,8 +77,61 @@ public class ShowBookActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				
+				new FetchPricekData(isbn10).execute();
 			}
 		});
+	}
+
+	private class FetchPricekData extends AsyncTask<String, Void, String> {
+		ProgressDialog pDialog;
+		String base_address = "http://api.dataweave.in/v1/book_search/searchByIsbn/?";
+		String api_key = "8a6bc2a929d699c8aa8ffabb3e932c22a1c45cee";
+		String api_address = "";
+
+		protected FetchPricekData(String isbn) {
+			api_address = base_address + "api_key=" + api_key + "&isbn=" + isbn;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			pDialog = ProgressDialog.show(ShowBookActivity.this, null,
+					"Please wait while we give you the best prices.", true);
+		}
+
+		protected String doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			Log.v("do InBackground", "doInBackground");
+			HttpClient httpClient = new DefaultHttpClient();
+			HttpResponse response;
+			String responseString = "";
+			try {
+				response = httpClient.execute(new HttpGet(api_address));
+				ByteArrayOutputStream out = new ByteArrayOutputStream();
+				response.getEntity().writeTo(out);
+				out.close();
+				responseString = out.toString();
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+				return "";
+			} catch (IOException e) {
+				e.printStackTrace();
+				return "";
+			}
+			return responseString;
+		}
+
+		@Override
+		protected void onPostExecute(String resultJSON) {
+			pDialog.dismiss();
+			if (resultJSON != "") {
+				Toast.makeText(getApplicationContext(), resultJSON,
+						Toast.LENGTH_SHORT).show();
+			} else {
+				AppMsg.makeText(
+						ShowBookActivity.this,
+						"Sorry, could not fetch prices at the moment. Please try again later.",
+						AppMsg.STYLE_ALERT).show();
+			}
+		}
 	}
 }
