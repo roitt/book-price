@@ -132,7 +132,7 @@ public class ShowBookActivity extends Activity {
 					if (mainObject != null && mainObject.has("data")) {
 						JSONArray data = mainObject.getJSONArray("data");
 						for (int i = 0; i < data.length(); i++) {
-
+							
 						}
 					}
 				} catch (JSONException ex) {
