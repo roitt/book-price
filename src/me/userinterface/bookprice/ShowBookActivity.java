@@ -77,18 +77,18 @@ public class ShowBookActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				new FetchPricekData(isbn10).execute();
+				new FetchPriceData(isbn10).execute();
 			}
 		});
 	}
 
-	private class FetchPricekData extends AsyncTask<String, Void, String> {
+	private class FetchPriceData extends AsyncTask<String, Void, String> {
 		ProgressDialog pDialog;
 		String base_address = "http://api.dataweave.in/v1/book_search/searchByIsbn/?";
 		String api_key = "8a6bc2a929d699c8aa8ffabb3e932c22a1c45cee";
 		String api_address = "";
 
-		protected FetchPricekData(String isbn) {
+		protected FetchPriceData(String isbn) {
 			api_address = base_address + "api_key=" + api_key + "&isbn=" + isbn;
 		}
 
