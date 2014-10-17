@@ -8,6 +8,9 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -124,8 +127,18 @@ public class ShowBookActivity extends Activity {
 		protected void onPostExecute(String resultJSON) {
 			pDialog.dismiss();
 			if (resultJSON != "") {
-				Toast.makeText(getApplicationContext(), resultJSON,
-						Toast.LENGTH_SHORT).show();
+				try {
+					JSONObject mainObject = new JSONObject(resultJSON);
+					if (mainObject != null && mainObject.has("data")) {
+						JSONArray data = mainObject.getJSONArray("data");
+						for (int i = 0; i < data.length(); i++) {
+
+						}
+					}
+				} catch (JSONException ex) {
+					ex.printStackTrace();
+				}
+
 			} else {
 				AppMsg.makeText(
 						ShowBookActivity.this,
