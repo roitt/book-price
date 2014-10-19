@@ -23,7 +23,7 @@
         <activity
             android:name="me.userinterface.bookprice.ZBarScannerActivity"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.Holo.NoActionBar" >
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
         <activity
             android:name=".ShowBookActivity"

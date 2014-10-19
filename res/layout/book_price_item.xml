@@ -6,11 +6,11 @@
 
     <ImageView
         android:id="@+id/bpi_thumbnail"
-        android:layout_width="40dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="80dp"
         android:layout_alignParentLeft="true"
         android:contentDescription="@string/app_name"
-        android:scaleType="centerInside"
+        android:scaleType="fitXY"
         android:src="@drawable/ic_book_def" />
 
     <TextView
@@ -20,7 +20,7 @@
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@id/bpi_thumbnail"
         android:text="@string/title"
-        android:textSize="14sp" />
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/bpi_seller"
@@ -30,7 +30,7 @@
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@id/bpi_thumbnail"
         android:text="@string/seller"
-        android:textSize="12sp"
+        android:textSize="16sp"
         android:textStyle="italic" />
 
     <TextView
@@ -41,6 +41,6 @@
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@id/bpi_thumbnail"
         android:text="@string/price"
-        android:textSize="12sp" />
+        android:textSize="16sp" />
 
 </RelativeLayout>

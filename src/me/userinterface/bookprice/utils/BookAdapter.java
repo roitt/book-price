@@ -80,7 +80,9 @@ public class BookAdapter extends BaseAdapter {
 						.placeholder(R.drawable.ic_book_def)
 						.error(R.drawable.ic_book_def).into(holder.thumb);
 			holder.title.setText(bookItem.getTitle());
-			holder.seller.setText(bookItem.getSource());
+			if (bookItem.getSource() != null
+					&& bookItem.getSource().length() != 0)
+				holder.seller.setText("Sold by " + bookItem.getSource());
 			float priceInDollars = (float) (bookItem.getPrice() / 61.28);
 			DecimalFormat format = new DecimalFormat("#.##");
 			holder.price.setText("$ " + format.format(priceInDollars));
