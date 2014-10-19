@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -79,7 +80,11 @@ public class ShowBookActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				new FetchPriceData(isbn10).execute();
+				Intent i = new Intent(ShowBookActivity.this,
+						BookPricesActivity.class);
+				i.putExtra("isbn", isbn10);
+				startActivity(i);
+				// new FetchPriceData(isbn10).execute();
 			}
 		});
 	}
@@ -131,7 +136,7 @@ public class ShowBookActivity extends Activity {
 					if (mainObject != null && mainObject.has("data")) {
 						JSONArray data = mainObject.getJSONArray("data");
 						for (int i = 0; i < data.length(); i++) {
-							
+
 						}
 					}
 				} catch (JSONException ex) {
