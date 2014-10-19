@@ -3,6 +3,7 @@ package me.userinterface.bookprice;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import me.userinterface.bookprice.utils.BookAdapter;
 import me.userinterface.bookprice.utils.BookItem;
 
 import org.apache.http.HttpResponse;
@@ -19,14 +20,25 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ListView;
 
 import com.devspark.appmsg.AppMsg;
 
 public class BookPricesActivity extends Activity {
+
+	// Adapter for book price list
+	BookAdapter bookAdapter;
+	ListView priceList;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_book_price_list);
+
+		bookAdapter = new BookAdapter(this);
+		// Get handle to the list view
+		priceList = (ListView) findViewById(R.id.book_price_list);
+		priceList.setAdapter(bookAdapter);
 
 		Bundle b = getIntent().getExtras();
 		String isbn = "";
@@ -81,6 +93,7 @@ public class BookPricesActivity extends Activity {
 			pDialog.dismiss();
 			if (resultJSON != "") {
 				try {
+					bookAdapter.clearList();
 					JSONObject mainObject = new JSONObject(resultJSON);
 					if (mainObject != null && mainObject.has("data")) {
 						JSONArray data = mainObject.getJSONArray("data");
@@ -103,12 +116,13 @@ public class BookPricesActivity extends Activity {
 							if (obj != null && obj.has("thumbnail")) {
 								bi.setThumbnailUrl(obj.getString("thumbnail"));
 							}
+							bookAdapter.addItem(bi);
 						}
 					}
 				} catch (JSONException ex) {
 					ex.printStackTrace();
 				}
-
+				bookAdapter.notifyDataSetChanged();
 			} else {
 				AppMsg.makeText(
 						BookPricesActivity.this,
