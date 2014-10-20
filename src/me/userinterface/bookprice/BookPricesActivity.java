@@ -17,9 +17,14 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.devspark.appmsg.AppMsg;
@@ -48,6 +53,21 @@ public class BookPricesActivity extends Activity {
 
 		if (isbn != "")
 			new FetchPriceData(isbn).execute();
+
+		priceList.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				// TODO Auto-generated method stub
+				BookItem book = (BookItem) priceList
+						.getItemAtPosition(position);
+				String url = book.getUrl();
+				Intent i = new Intent(Intent.ACTION_VIEW);
+				i.setData(Uri.parse(url));
+				startActivity(i);
+			}
+		});
 	}
 
 	private class FetchPriceData extends AsyncTask<String, Void, String> {
