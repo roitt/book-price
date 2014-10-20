@@ -33,7 +33,7 @@
         <activity
             android:name=".BookPricesActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".me.userinterface.bookprice.ZBarScannerActivity" >
+            android:parentActivityName=".ShowBookActivity" >
         </activity>
         <activity
             android:name=".SplashActivity"
