@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import me.userinterface.bookprice.utils.BookAdapter;
 import me.userinterface.bookprice.utils.BookItem;
+import me.userinterface.bookprice.utils.ConnectionInspector;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -38,6 +39,8 @@ public class BookPricesActivity extends Activity {
 	BookAdapter bookAdapter;
 	ListView priceList;
 
+	ConnectionInspector conIns;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,8 +57,15 @@ public class BookPricesActivity extends Activity {
 			isbn = b.getString("isbn");
 		}
 
-		if (isbn != "")
-			new FetchPriceData(isbn).execute();
+		conIns = new ConnectionInspector(BookPricesActivity.this);
+		if (isbn != "") {
+			if (conIns.isConnectingToInternet())
+				new FetchPriceData(isbn).execute();
+			else
+				AppMsg.makeText(BookPricesActivity.this,
+						"Please connect to internet and try again.",
+						AppMsg.STYLE_ALERT).show();
+		}
 
 		priceList.setOnItemClickListener(new OnItemClickListener() {
 
